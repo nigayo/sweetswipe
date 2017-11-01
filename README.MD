@@ -3,6 +3,7 @@ SweetSwipe
 A lightweight swiping(flicking) mobile web component.
 
 <br>
+
 ## Demo
 
 * <a href="https://skplanet.github.io/sweetswipe/demo/swipe.html" target="_blank">Base demo</a>
@@ -11,6 +12,7 @@ A lightweight swiping(flicking) mobile web component.
 <img src="demo/img/swipedemo.png" width="300">
 
 <br>
+
 ## Feature
 
 * lightweight (vanillaJS)
@@ -18,7 +20,8 @@ A lightweight swiping(flicking) mobile web component.
 * multiple options and plugins
 
 <br>
-## Compatibility 
+
+## Compatibility
 
 | Device | Browser | 
 | ------ | ------- |
@@ -26,6 +29,7 @@ A lightweight swiping(flicking) mobile web component.
 | Mobile | Android 4.x, Chrome, Safari |
 
 <br>
+
 ## Install
 
 * npm install
@@ -40,6 +44,7 @@ A lightweight swiping(flicking) mobile web component.
 * bower install sweetswipe
 
 <br>
+
 ## Usage - HTML 
 
 ```HTML
@@ -92,6 +97,7 @@ A lightweight swiping(flicking) mobile web component.
 ```
 
 <br>
+
 ## Usage - JavaScript
 
 ```javascript
@@ -110,6 +116,7 @@ A lightweight swiping(flicking) mobile web component.
 ```
 
 <br>
+
 ## Options 
 
 | Option | Description|
@@ -127,6 +134,7 @@ A lightweight swiping(flicking) mobile web component.
 <img src="demo/img/swipe.png" width="350">
 
 <br>
+
 ## Custom function
 You can register custom function that executed at specific point of time.
 
@@ -147,6 +155,7 @@ You can register custom function that executed at specific point of time.
 ```
 
 <br>
+
 ## API
 | Function | Description | return | Parameter |
 | -------- | ----------- | ------ | --------- |
@@ -155,6 +164,7 @@ You can register custom function that executed at specific point of time.
 
 
 <br>
+
 ## Usage of Circular swiping
 
 ##### JavaScript
@@ -198,6 +208,7 @@ Reference code : [go to demo page]( https://github.com/skplanet/sweetswipe/blob/
 ```
 
 <br>
+
 ##  Plugin - SwipeNavigationPlugin
 Tab menu navigation UI.
 
@@ -229,6 +240,7 @@ Tab menu navigation UI.
 ```
 
 <br>
+
 ##  Plugin - SwipeStepMoverPlugin
 Button menu navigation UI
 
@@ -256,14 +268,17 @@ Button menu navigation UI
 ```
 
 <br>
+
 ## Test
 <a href="https://skplanet.github.io/sweetswipe/spec/swipe.test.html" target="_blank">unit test page</a>
 
 <br>
+
 ## Contributing
 See our [CONTRIBUTING.md](https://github.com/skplanet/sweetswipe/blob/master/CONTRIBUTING.md) for information on how to contribute.
 
 <br>
+
 ## License
 MIT Licensed. Copyright (c) 2016 SK PLANET. All Rights Reserved.
 
