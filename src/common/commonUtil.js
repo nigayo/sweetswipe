@@ -9,6 +9,10 @@ var _cu = {
     let sTF = this.getCSSName('transform');
     ele.style[sTF] = 'translate3d(' + (nValue) + 'px, 0, 0)';
   },
+  setTranslate3dXPercent(ele, nValue) {
+    let sTF = this.getCSSName('transform');
+    ele.style[sTF] = 'translate3d(' + (nValue) + '%, 0, 0)';
+  },
   getWidth(ele) {
     let nWidth = 0;
 
@@ -52,6 +56,13 @@ var _cu = {
     let sTF = this.getCSSName("transform");
     let sPreCss = ele.style[sTF];
     let nPreX = +sPreCss.replace(/translate3d\((-*\d+(?:\.\d+)*)(px)*\,.+\)/g , "$1");
+    return nPreX;
+  },
+
+  getTranslate3dXPercent(ele) {
+    let sTF = this.getCSSName("transform");
+    let sPreCss = ele.style[sTF];
+    let nPreX = +sPreCss.replace(/translate3d\((-*\d+(?:\.\d+)*)(%)*\,.+\)/g , "$1");
     return nPreX;
   },
 

@@ -40,6 +40,10 @@ var _cu = {
     var sTF = this.getCSSName('transform');
     ele.style[sTF] = 'translate3d(' + nValue + 'px, 0, 0)';
   },
+  setTranslate3dXPercent: function setTranslate3dXPercent(ele, nValue) {
+    var sTF = this.getCSSName('transform');
+    ele.style[sTF] = 'translate3d(' + nValue + '%, 0, 0)';
+  },
   getWidth: function getWidth(ele) {
     var nWidth = 0;
 
@@ -80,6 +84,12 @@ var _cu = {
     var sTF = this.getCSSName("transform");
     var sPreCss = ele.style[sTF];
     var nPreX = +sPreCss.replace(/translate3d\((-*\d+(?:\.\d+)*)(px)*\,.+\)/g, "$1");
+    return nPreX;
+  },
+  getTranslate3dXPercent: function getTranslate3dXPercent(ele) {
+    var sTF = this.getCSSName("transform");
+    var sPreCss = ele.style[sTF];
+    var nPreX = +sPreCss.replace(/translate3d\((-*\d+(?:\.\d+)*)(%)*\,.+\)/g, "$1");
     return nPreX;
   },
   getCSSTransitionEnd: function getCSSTransitionEnd() {
@@ -639,7 +649,8 @@ var SweetSwipe = function (_CommonComponent3) {
     this.nStartPosX = Math.floor(pageX);
     this.nStartPosY = Math.floor(pageY);
 
-    this.nStartTranslateX = _cu.getTranslate3dX(this.elTarget);
+    //this.nStartTranslateX = _cu.getTranslate3dX(this.elTarget);
+    this.nStartTranslateX = _cu.getTranslate3dXPercent(this.elTarget) / 100 * _cu.getWidth(this.elTarget.firstElementChild);
 
     this.nTouchStartTime = Date.now();
   };
@@ -668,7 +679,15 @@ var SweetSwipe = function (_CommonComponent3) {
 
     var nMoveDiff = this.nMovePosX - this.nPreMoveX;
 
-    this.dragArea(nMoveDiff);
+    var nPreviousX = 0;
+
+    if (this.bFirstTouchMove) {
+      nPreviousX = _cu.getTranslate3dXPercent(this.elTarget) / 100 * _cu.getWidth(this.elTarget.firstElementChild);
+    } else {
+      nPreviousX = _cu.getTranslate3dX(this.elTarget);
+    }
+
+    this.dragArea(nPreviousX, nMoveDiff);
 
     this.nPreMoveX = this.nMovePosX;
     this.nPreMoveY = this.nMovePosX;
@@ -753,9 +772,11 @@ var SweetSwipe = function (_CommonComponent3) {
     var nMoveValue = nPanelCount * nPanelWidth; //refs : clonedNode is 2.
 
     if (nPanelIndex === 0) {
-      _cu.setTranslate3dX(this.elTarget, 0);
+      //_cu.setTranslate3dX(this.elTarget, 0);
+      _cu.setTranslate3dXPercent(this.elTarget, 0);
     } else if (nPanelIndex === nPanelCount) {
-      _cu.setTranslate3dX(this.elTarget, -nMoveValue);
+      //_cu.setTranslate3dX(this.elTarget, -nMoveValue);
+      //_cu.setTranslate3dXPercent(this.elTarget, -nMoveValue);
     } else {}
   };
 
@@ -769,6 +790,9 @@ var SweetSwipe = function (_CommonComponent3) {
       _this5.elTarget.style[sTS] = "none";
 
       //if(!this.bByTouchEnd) return;
+
+      //this._changeToPercent(this.nNextNumber * (-100));
+      _cu.setTranslate3dXPercent(_this5.elTarget, _this5.nNextNumber * -100);
 
       if (_this5.option.bCircular) {
         _this5._restoreTransformX(_this5.nNextNumber);
@@ -810,8 +834,8 @@ var SweetSwipe = function (_CommonComponent3) {
     return sDirection === "left" ? ++nIndex : --nIndex;
   };
 
-  SweetSwipe.prototype.dragArea = function dragArea(nMoveDiff) {
-    var nPreX = _cu.getTranslate3dX(this.elTarget);
+  SweetSwipe.prototype.dragArea = function dragArea(nPreX, nMoveDiff) {
+    //let nPreX = _cu.getTranslate3dX(this.elTarget);
 
     this.bOutRangeRight = false;
     this.bOutRangeLeft = false;

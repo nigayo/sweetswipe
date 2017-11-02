@@ -119,7 +119,8 @@ class SweetSwipe extends CommonComponent {
     this.nStartPosX = Math.floor(pageX);
     this.nStartPosY = Math.floor(pageY);
 
-    this.nStartTranslateX = _cu.getTranslate3dX(this.elTarget);
+    //this.nStartTranslateX = _cu.getTranslate3dX(this.elTarget);
+    this.nStartTranslateX = _cu.getTranslate3dXPercent(this.elTarget) / 100 * _cu.getWidth(this.elTarget.firstElementChild);
 
     this.nTouchStartTime = Date.now();
   }
@@ -148,7 +149,15 @@ class SweetSwipe extends CommonComponent {
 
       let nMoveDiff = this.nMovePosX - this.nPreMoveX;
 
-      this.dragArea(nMoveDiff);
+      let nPreviousX = 0;
+
+      if(this.bFirstTouchMove) {
+        nPreviousX = _cu.getTranslate3dXPercent(this.elTarget) / 100 * _cu.getWidth(this.elTarget.firstElementChild);
+      } else {
+        nPreviousX = _cu.getTranslate3dX(this.elTarget);
+      }
+
+      this.dragArea(nPreviousX, nMoveDiff);
 
       this.nPreMoveX = this.nMovePosX;
       this.nPreMoveY = this.nMovePosX;
@@ -231,9 +240,11 @@ class SweetSwipe extends CommonComponent {
     let nMoveValue = (nPanelCount) * nPanelWidth; //refs : clonedNode is 2.
 
     if(nPanelIndex === 0)  { 
-      _cu.setTranslate3dX(this.elTarget, 0);
+      //_cu.setTranslate3dX(this.elTarget, 0);
+      _cu.setTranslate3dXPercent(this.elTarget, 0);
     } else if (nPanelIndex === (nPanelCount)) { 
-  	  _cu.setTranslate3dX(this.elTarget, -nMoveValue);
+  	  //_cu.setTranslate3dX(this.elTarget, -nMoveValue);
+      //_cu.setTranslate3dXPercent(this.elTarget, -nMoveValue);
     } else {}
   }
 
@@ -245,6 +256,9 @@ class SweetSwipe extends CommonComponent {
         this.elTarget.style[sTS] = "none";
 
         //if(!this.bByTouchEnd) return;
+
+        //this._changeToPercent(this.nNextNumber * (-100));
+        _cu.setTranslate3dXPercent(this.elTarget, this.nNextNumber * (-100));
 
         if(this.option.bCircular) { 
           this._restoreTransformX(this.nNextNumber);
@@ -262,7 +276,7 @@ class SweetSwipe extends CommonComponent {
 
   setNextNumber(nNextNumber) {
     this.nNextNumber = nNextNumber;
-  }
+  };
 
   setDynamicHeight(nNextNumber) {
     if(this.option.bCircular) { nNextNumber++ } 
@@ -284,8 +298,8 @@ class SweetSwipe extends CommonComponent {
     return (sDirection === "left") ? ++nIndex : --nIndex;
   }
 
-  dragArea(nMoveDiff) {
-    let nPreX = _cu.getTranslate3dX(this.elTarget);
+  dragArea(nPreX, nMoveDiff) {
+    //let nPreX = _cu.getTranslate3dX(this.elTarget);
 
     this.bOutRangeRight = false;
     this.bOutRangeLeft = false;
