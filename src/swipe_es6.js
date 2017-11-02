@@ -80,6 +80,7 @@ class SweetSwipe extends CommonComponent {
 
     this.bAnimationing = false;
     this.nNextNumber = 0;
+
   }
 
   registerEvents() {
@@ -119,8 +120,8 @@ class SweetSwipe extends CommonComponent {
     this.nStartPosX = Math.floor(pageX);
     this.nStartPosY = Math.floor(pageY);
 
-    //this.nStartTranslateX = _cu.getTranslate3dX(this.elTarget);
-    this.nStartTranslateX = _cu.getTranslate3dXPercent(this.elTarget) / 100 * _cu.getWidth(this.elTarget.firstElementChild);
+    this.nStartTranslateX = _cu.getTranslate3dX(this.elTarget);
+    //this.nStartTranslateX = _cu.getTranslate3dXPercent(this.elTarget) / 100 * _cu.getWidth(this.elTarget.firstElementChild);
 
     this.nTouchStartTime = Date.now();
   }
@@ -151,11 +152,12 @@ class SweetSwipe extends CommonComponent {
 
       let nPreviousX = 0;
 
-      if(this.bFirstTouchMove) {
-        nPreviousX = _cu.getTranslate3dXPercent(this.elTarget) / 100 * _cu.getWidth(this.elTarget.firstElementChild);
-      } else {
-        nPreviousX = _cu.getTranslate3dX(this.elTarget);
-      }
+      // if(this.bFirstTouchMove) {
+      //   nPreviousX = _cu.getTranslate3dXPercent(this.elTarget) / 100 * _cu.getWidth(this.elTarget.firstElementChild);
+      // } else {
+      //   nPreviousX = _cu.getTranslate3dX(this.elTarget);
+      // }
+      nPreviousX = _cu.getTranslate3dX(this.elTarget);
 
       this.dragArea(nPreviousX, nMoveDiff);
 
@@ -205,9 +207,10 @@ class SweetSwipe extends CommonComponent {
     this.nNextNumber = Math.round(this.nNextNumber);
 
     if(this.option.bCircular) {
-  	  if(this.nNextNumber === -1) { this.nNextNumber = this.nSwipeElementCount -3}
-  		else if(this.nNextNumber === (this.nSwipeElementCount - 2)) { this.nNextNumber = 0}
-  		else {}
+      this.nNextNumber = this.reAdjustNextNumberForCircular(this.nNextNumber);
+  	 //  if(this.nNextNumber === -1) { this.nNextNumber = this.nSwipeElementCount -3}
+  		// else if(this.nNextNumber === (this.nSwipeElementCount - 2)) { this.nNextNumber = 0}
+  		// else {}
 	  }
 
     if(sDirection === 'left') nWidthForAnimation = -nWidthForAnimation ;
@@ -222,6 +225,13 @@ class SweetSwipe extends CommonComponent {
     this.bSwipe = false;
   }
 
+  reAdjustNextNumberForCircular(nNextNumber) {
+    if(nNextNumber === -1) { nNextNumber = this.nSwipeElementCount -3}
+    else if(nNextNumber === (this.nSwipeElementCount - 2)) { nNextNumber = 0}
+    else {}
+      return nNextNumber;
+  }
+
   runSwipeAction(nDuration, nNextNumber, nWidthForAnimation) {
     if(typeof nWidthForAnimation  === "undefined") { 
        let nWidth = this.nSwipeWidth;
@@ -234,7 +244,7 @@ class SweetSwipe extends CommonComponent {
     this.runTransition(this.elTarget, nWidthForAnimation, nDuration/1000); //to second.
   }
 
-  _restoreTransformX(nPanelIndex) {
+  _restoreTransformXPercent(nPanelIndex) {
     let nPanelCount = this.nSwipeElementCount - 3;
     let nPanelWidth = this.nSwipeWidth;
     let nMoveValue = (nPanelCount) * nPanelWidth; //refs : clonedNode is 2.
@@ -242,9 +252,10 @@ class SweetSwipe extends CommonComponent {
     if(nPanelIndex === 0)  { 
       //_cu.setTranslate3dX(this.elTarget, 0);
       _cu.setTranslate3dXPercent(this.elTarget, 0);
-    } else if (nPanelIndex === (nPanelCount)) { 
+    } else if (nPanelIndex > (nPanelCount)) { 
   	  //_cu.setTranslate3dX(this.elTarget, -nMoveValue);
       //_cu.setTranslate3dXPercent(this.elTarget, -nMoveValue);
+      _cu.setTranslate3dXPercent(this.elTarget, 0);
     } else {}
   }
 
@@ -255,13 +266,10 @@ class SweetSwipe extends CommonComponent {
         let sTS = _cu.getCSSName('transition');
         this.elTarget.style[sTS] = "none";
 
-        //if(!this.bByTouchEnd) return;
-
-        //this._changeToPercent(this.nNextNumber * (-100));
         _cu.setTranslate3dXPercent(this.elTarget, this.nNextNumber * (-100));
 
         if(this.option.bCircular) { 
-          this._restoreTransformX(this.nNextNumber);
+          this._restoreTransformXPercent(this.nNextNumber);
         }
 
         super.runCustomFn('USER', 'FN_AFTER_SWIPE', this.nNextNumber);
@@ -271,6 +279,8 @@ class SweetSwipe extends CommonComponent {
 
         //this.bByTouchEnd = false;
         this.nNextNumber = 0;
+
+        this.bAnimationing = false;
       });
   }
 
@@ -299,8 +309,6 @@ class SweetSwipe extends CommonComponent {
   }
 
   dragArea(nPreX, nMoveDiff) {
-    //let nPreX = _cu.getTranslate3dX(this.elTarget);
-
     this.bOutRangeRight = false;
     this.bOutRangeLeft = false;
 
@@ -321,7 +329,10 @@ class SweetSwipe extends CommonComponent {
   }
 
   runTransition(elTarget, nDistance, nDuration) {
+    this.bAnimationing= true;
+
     let nPreviousTranslateX = _cu.getTranslate3dX(elTarget);
+
     let sTS = _cu.getCSSName('transition');
     let sTF = _cu.getCSSName('transform');
     let sValue = "";

@@ -55,10 +55,14 @@ class SwipeStepMoverPlugin extends CommonComponent {
   }
 
   handlerClickButton(evt, sDirection) {
+    if(this.oParentInstance.bAnimationing) return;
     let nCur = this.oParentInstance.getCurrentViewNumber();
+    let bCircular = this.oParentInstance.option.bCircular;
 
-    if(nCur === 0 && sDirection ==="toLeft") return;
-    if(nCur === this.oParentInstance.nSwipeElementCount-1 && sDirection ==="toRight") return;
+    if(!bCircular) {
+      if(nCur === 0 && sDirection ==="toLeft") return;
+      if(nCur === this.oParentInstance.nSwipeElementCount-1 && sDirection ==="toRight") return;
+    }
 
     let nWidth = this.oParentInstance.nSwipeWidth;
 
@@ -68,6 +72,8 @@ class SwipeStepMoverPlugin extends CommonComponent {
     } else {
       nCur--;
     }
+
+    if(bCircular) nCur = this.oParentInstance.reAdjustNextNumberForCircular(nCur);
 
     //for no animation, nDuration set zero.
     this.oParentInstance.runSwipeAction(this.option.nDuration, nCur, nWidth);
@@ -88,10 +94,12 @@ class SwipeStepMoverPlugin extends CommonComponent {
   }
 
   dockingPluginMethod(oParent) {
-    oParent.registerPluginMethod({
-      'FN_COMPONENT_DID_LOAD' : this.setDisplayOfButton.bind(this,0),
-      'FN_AFTER_SWIPE' : this.setDisplayOfButton.bind(this)
-    });
+    if(!oParent.option.bCircular) {
+      oParent.registerPluginMethod({
+        'FN_COMPONENT_DID_LOAD' : this.setDisplayOfButton.bind(this,0),
+        'FN_AFTER_SWIPE' : this.setDisplayOfButton.bind(this)
+      });
+    }
     this.oParentInstance = oParent;
   }
 }

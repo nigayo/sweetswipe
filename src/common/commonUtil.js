@@ -55,7 +55,15 @@ var _cu = {
   getTranslate3dX(ele) {
     let sTF = this.getCSSName("transform");
     let sPreCss = ele.style[sTF];
-    let nPreX = +sPreCss.replace(/translate3d\((-*\d+(?:\.\d+)*)(px)*\,.+\)/g , "$1");
+    let nPreX = 0;
+
+    if(sPreCss.indexOf("%") ===  -1) { 
+      nPreX = +sPreCss.replace(/translate3d\((-*\d+(?:\.\d+)*)(px)*\,.+\)/g , "$1");
+    } else { 
+      nPreX = +sPreCss.replace(/translate3d\((-*\d+(?:\.\d+)*)(%)*\,.+\)/g , "$1");
+      nPreX = nPreX / 100 * this.getWidth(ele.firstElementChild);
+    }
+
     return nPreX;
   },
 

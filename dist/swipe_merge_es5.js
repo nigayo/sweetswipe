@@ -83,7 +83,15 @@ var _cu = {
   getTranslate3dX: function getTranslate3dX(ele) {
     var sTF = this.getCSSName("transform");
     var sPreCss = ele.style[sTF];
-    var nPreX = +sPreCss.replace(/translate3d\((-*\d+(?:\.\d+)*)(px)*\,.+\)/g, "$1");
+    var nPreX = 0;
+
+    if (sPreCss.indexOf("%") === -1) {
+      nPreX = +sPreCss.replace(/translate3d\((-*\d+(?:\.\d+)*)(px)*\,.+\)/g, "$1");
+    } else {
+      nPreX = +sPreCss.replace(/translate3d\((-*\d+(?:\.\d+)*)(%)*\,.+\)/g, "$1");
+      nPreX = nPreX / 100 * this.getWidth(ele.firstElementChild);
+    }
+
     return nPreX;
   },
   getTranslate3dXPercent: function getTranslate3dXPercent(ele) {
@@ -473,10 +481,14 @@ var SwipeStepMoverPlugin = function (_CommonComponent2) {
   };
 
   SwipeStepMoverPlugin.prototype.handlerClickButton = function handlerClickButton(evt, sDirection) {
+    if (this.oParentInstance.bAnimationing) return;
     var nCur = this.oParentInstance.getCurrentViewNumber();
+    var bCircular = this.oParentInstance.option.bCircular;
 
-    if (nCur === 0 && sDirection === "toLeft") return;
-    if (nCur === this.oParentInstance.nSwipeElementCount - 1 && sDirection === "toRight") return;
+    if (!bCircular) {
+      if (nCur === 0 && sDirection === "toLeft") return;
+      if (nCur === this.oParentInstance.nSwipeElementCount - 1 && sDirection === "toRight") return;
+    }
 
     var nWidth = this.oParentInstance.nSwipeWidth;
 
@@ -486,6 +498,8 @@ var SwipeStepMoverPlugin = function (_CommonComponent2) {
     } else {
       nCur--;
     }
+
+    if (bCircular) nCur = this.oParentInstance.reAdjustNextNumberForCircular(nCur);
 
     //for no animation, nDuration set zero.
     this.oParentInstance.runSwipeAction(this.option.nDuration, nCur, nWidth);
@@ -506,10 +520,12 @@ var SwipeStepMoverPlugin = function (_CommonComponent2) {
   };
 
   SwipeStepMoverPlugin.prototype.dockingPluginMethod = function dockingPluginMethod(oParent) {
-    oParent.registerPluginMethod({
-      'FN_COMPONENT_DID_LOAD': this.setDisplayOfButton.bind(this, 0),
-      'FN_AFTER_SWIPE': this.setDisplayOfButton.bind(this)
-    });
+    if (!oParent.option.bCircular) {
+      oParent.registerPluginMethod({
+        'FN_COMPONENT_DID_LOAD': this.setDisplayOfButton.bind(this, 0),
+        'FN_AFTER_SWIPE': this.setDisplayOfButton.bind(this)
+      });
+    }
     this.oParentInstance = oParent;
   };
 
@@ -649,8 +665,8 @@ var SweetSwipe = function (_CommonComponent3) {
     this.nStartPosX = Math.floor(pageX);
     this.nStartPosY = Math.floor(pageY);
 
-    //this.nStartTranslateX = _cu.getTranslate3dX(this.elTarget);
-    this.nStartTranslateX = _cu.getTranslate3dXPercent(this.elTarget) / 100 * _cu.getWidth(this.elTarget.firstElementChild);
+    this.nStartTranslateX = _cu.getTranslate3dX(this.elTarget);
+    //this.nStartTranslateX = _cu.getTranslate3dXPercent(this.elTarget) / 100 * _cu.getWidth(this.elTarget.firstElementChild);
 
     this.nTouchStartTime = Date.now();
   };
@@ -681,11 +697,12 @@ var SweetSwipe = function (_CommonComponent3) {
 
     var nPreviousX = 0;
 
-    if (this.bFirstTouchMove) {
-      nPreviousX = _cu.getTranslate3dXPercent(this.elTarget) / 100 * _cu.getWidth(this.elTarget.firstElementChild);
-    } else {
-      nPreviousX = _cu.getTranslate3dX(this.elTarget);
-    }
+    // if(this.bFirstTouchMove) {
+    //   nPreviousX = _cu.getTranslate3dXPercent(this.elTarget) / 100 * _cu.getWidth(this.elTarget.firstElementChild);
+    // } else {
+    //   nPreviousX = _cu.getTranslate3dX(this.elTarget);
+    // }
+    nPreviousX = _cu.getTranslate3dX(this.elTarget);
 
     this.dragArea(nPreviousX, nMoveDiff);
 
@@ -735,11 +752,10 @@ var SweetSwipe = function (_CommonComponent3) {
     this.nNextNumber = Math.round(this.nNextNumber);
 
     if (this.option.bCircular) {
-      if (this.nNextNumber === -1) {
-        this.nNextNumber = this.nSwipeElementCount - 3;
-      } else if (this.nNextNumber === this.nSwipeElementCount - 2) {
-        this.nNextNumber = 0;
-      } else {}
+      this.nNextNumber = this.reAdjustNextNumberForCircular(this.nNextNumber);
+      //  if(this.nNextNumber === -1) { this.nNextNumber = this.nSwipeElementCount -3}
+      // else if(this.nNextNumber === (this.nSwipeElementCount - 2)) { this.nNextNumber = 0}
+      // else {}
     }
 
     if (sDirection === 'left') nWidthForAnimation = -nWidthForAnimation;
@@ -754,6 +770,15 @@ var SweetSwipe = function (_CommonComponent3) {
     this.bSwipe = false;
   };
 
+  SweetSwipe.prototype.reAdjustNextNumberForCircular = function reAdjustNextNumberForCircular(nNextNumber) {
+    if (nNextNumber === -1) {
+      nNextNumber = this.nSwipeElementCount - 3;
+    } else if (nNextNumber === this.nSwipeElementCount - 2) {
+      nNextNumber = 0;
+    } else {}
+    return nNextNumber;
+  };
+
   SweetSwipe.prototype.runSwipeAction = function runSwipeAction(nDuration, nNextNumber, nWidthForAnimation) {
     if (typeof nWidthForAnimation === "undefined") {
       var nWidth = this.nSwipeWidth;
@@ -766,7 +791,7 @@ var SweetSwipe = function (_CommonComponent3) {
     this.runTransition(this.elTarget, nWidthForAnimation, nDuration / 1000); //to second.
   };
 
-  SweetSwipe.prototype._restoreTransformX = function _restoreTransformX(nPanelIndex) {
+  SweetSwipe.prototype._restoreTransformXPercent = function _restoreTransformXPercent(nPanelIndex) {
     var nPanelCount = this.nSwipeElementCount - 3;
     var nPanelWidth = this.nSwipeWidth;
     var nMoveValue = nPanelCount * nPanelWidth; //refs : clonedNode is 2.
@@ -774,9 +799,10 @@ var SweetSwipe = function (_CommonComponent3) {
     if (nPanelIndex === 0) {
       //_cu.setTranslate3dX(this.elTarget, 0);
       _cu.setTranslate3dXPercent(this.elTarget, 0);
-    } else if (nPanelIndex === nPanelCount) {
+    } else if (nPanelIndex > nPanelCount) {
       //_cu.setTranslate3dX(this.elTarget, -nMoveValue);
       //_cu.setTranslate3dXPercent(this.elTarget, -nMoveValue);
+      _cu.setTranslate3dXPercent(this.elTarget, 0);
     } else {}
   };
 
@@ -789,13 +815,10 @@ var SweetSwipe = function (_CommonComponent3) {
       var sTS = _cu.getCSSName('transition');
       _this5.elTarget.style[sTS] = "none";
 
-      //if(!this.bByTouchEnd) return;
-
-      //this._changeToPercent(this.nNextNumber * (-100));
       _cu.setTranslate3dXPercent(_this5.elTarget, _this5.nNextNumber * -100);
 
       if (_this5.option.bCircular) {
-        _this5._restoreTransformX(_this5.nNextNumber);
+        _this5._restoreTransformXPercent(_this5.nNextNumber);
       }
 
       _CommonComponent3.prototype.runCustomFn.call(_this5, 'USER', 'FN_AFTER_SWIPE', _this5.nNextNumber);
@@ -805,6 +828,8 @@ var SweetSwipe = function (_CommonComponent3) {
 
       //this.bByTouchEnd = false;
       _this5.nNextNumber = 0;
+
+      _this5.bAnimationing = false;
     });
   };
 
@@ -835,8 +860,6 @@ var SweetSwipe = function (_CommonComponent3) {
   };
 
   SweetSwipe.prototype.dragArea = function dragArea(nPreX, nMoveDiff) {
-    //let nPreX = _cu.getTranslate3dX(this.elTarget);
-
     this.bOutRangeRight = false;
     this.bOutRangeLeft = false;
 
@@ -857,7 +880,10 @@ var SweetSwipe = function (_CommonComponent3) {
   };
 
   SweetSwipe.prototype.runTransition = function runTransition(elTarget, nDistance, nDuration) {
+    this.bAnimationing = true;
+
     var nPreviousTranslateX = _cu.getTranslate3dX(elTarget);
+
     var sTS = _cu.getCSSName('transition');
     var sTF = _cu.getCSSName('transform');
     var sValue = "";
