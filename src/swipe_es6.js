@@ -302,7 +302,6 @@ class SweetSwipe extends CommonComponent {
   }
 
   _getNextViewNumber(nPos, sDirection, bSwipeGo) {
-    //let nIndex = Math.round(-(nPos / this.nSwipeWidth) + 1);
     let nIndex = Math.round(-(nPos / this.nSwipeWidth));
     if(!bSwipeGo) return nIndex;
     return (sDirection === "left") ? ++nIndex : --nIndex;
@@ -345,19 +344,4 @@ class SweetSwipe extends CommonComponent {
     elTarget.style[sTF] = 'translate3d(' + (nPreviousTranslateX + nDistance) + 'px, 0, 0)';
   }
 
-  cloneNodeForCircular () {
-    let _elBase = this.elTarget;
-
-    let elLastCloneNode = _elBase.lastElementChild.cloneNode(true);
-    let elFirstCloneNode = _elBase.firstElementChild.cloneNode(true);
-
-    elLastCloneNode.className += " cloned";
-    elFirstCloneNode.className += " cloned";
-
-    //append first position.
-    _elBase.insertBefore(elLastCloneNode, _elBase.firstElementChild);
-
-    //append last position
-    _elBase.appendChild(elFirstCloneNode);
-  }
 }

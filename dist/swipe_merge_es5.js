@@ -894,22 +894,6 @@ var SweetSwipe = function (_CommonComponent3) {
     elTarget.style[sTF] = 'translate3d(' + (nPreviousTranslateX + nDistance) + 'px, 0, 0)';
   };
 
-  SweetSwipe.prototype.cloneNodeForCircular = function cloneNodeForCircular() {
-    var _elBase = this.elTarget;
-
-    var elLastCloneNode = _elBase.lastElementChild.cloneNode(true);
-    var elFirstCloneNode = _elBase.firstElementChild.cloneNode(true);
-
-    elLastCloneNode.className += " cloned";
-    elFirstCloneNode.className += " cloned";
-
-    //append first position.
-    _elBase.insertBefore(elLastCloneNode, _elBase.firstElementChild);
-
-    //append last position
-    _elBase.appendChild(elFirstCloneNode);
-  };
-
   return SweetSwipe;
 }(CommonComponent);
 //# sourceMappingURL=swipe_merge_es5.js.map
