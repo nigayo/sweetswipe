@@ -38,18 +38,15 @@
             #swipeWrap > div:nth-child(1) {
                  -ms-transform: translate3d(-100%, 0px, 0px);
                 -webkit-transform: translate3d(-100%, 0px, 0px);
-                -webkit-transform: translate3d(-100%, 0px, 0px);
                 background-color: #FFCDD2;
             }
             #swipeWrap > div:nth-child(2){
                 -ms-transform: translate3d(0%, 0px, 0px);
                 -webkit-transform: translate3d(0%, 0px, 0px);
-                -webkit-transform: translate3d(0%, 0px, 0px);
                 background-color: #F5F5F5;
             }
             #swipeWrap > div:nth-child(3){
                 -ms-transform: translate3d(100%, 0px, 0px);
-                -webkit-transform: translate3d(100%, 0px, 0px);
                 -webkit-transform: translate3d(100%, 0px, 0px);
                 background-color: #BBDEFB;
             }
@@ -57,13 +54,11 @@
             #swipeWrap > div:nth-child(4){
               -ms-transform: translate3d(200%, 0px, 0px);
               -webkit-transform: translate3d(200%, 0px, 0px);
-              -webkit-transform: translate3d(200%, 0px, 0px);
               background-color: #FFFDE7;
             }
 
             #swipeWrap > div:nth-child(5){
               -ms-transform: translate3d(300%, 0px, 0px);
-              -webkit-transform: translate3d(300%, 0px, 0px);
               -webkit-transform: translate3d(300%, 0px, 0px);
                 background-color: #FFCDD2;
             }
@@ -71,7 +66,6 @@
             #swipeWrap > div:nth-child(6){
               -ms-transform: translate3d(400%, 0px, 0px);
               -webkit-transform: translate3d(400%, 0px, 0px);  
-              -webkit-transform: translate3d(400%, 0px, 0px);
                 background-color: #F5F5F5;
             }
 
@@ -89,20 +83,19 @@
                         <img src="https://www.javascript.com/images/meta/facebook.png" alt="">
                     </div>
 
-                    <div >
+                    <div>
                         <img src="https://i.ytimg.com/vi/lN2bl-TVOg4/maxresdefault.jpg" alt="">
                     </div>
 
-                    <div >
+                    <div>
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqgponfO-VubUNkCnDOGWDMCx0CRVSHYQ59uaBckfLFE8K5brCfQ" alt="">
                     </div>
 
-
-                    <div >
+                    <div>
                     <img src="https://cdn-images-1.medium.com/max/653/1*wMZnVAEei1xbY1v6sAbYxQ.png" alt="">
                     </div>
 
-                    <div >
+                    <div>
                         <img src="https://www.javascript.com/images/meta/facebook.png" alt="">
                     </div>
 
@@ -123,7 +116,8 @@
     <script src="../dist/swipe_merge_es5.js"></script>
 
   <script>
-        var oMyswipe = new SweetSwipe(document.getElementById("swipeWrap"), {
+        var elSwapWrap = document.getElementById("swipeWrap");
+        var oMyswipe = new SweetSwipe( elSwapWrap, {
           'bCircular' : true,
           'nDuration' : 300,  //default 100
           'nBackWidth' : 60,  //default 60
@@ -153,12 +147,17 @@
         } 
         ]);
 
-        (function movePanel() {
-          setTimeout( () => {
-              oMyswipe.runAutoAnimation("toRight");
-              movePanel();
-          }, 3000);
-      })();
+        var elViewImage = document.querySelector("#swipeWrap > div:nth-child(2) img");
+        elViewImage.onload = function() {
+          elFirst = _cu.setDynamicHeight(0, elSwapWrap, true);
+        }    
+
+      //   (function movePanel() {
+      //     setTimeout( () => {
+      //         oMyswipe.runAutoAnimation("toRight");
+      //         movePanel();
+      //     }, 3000);
+      // })();
 
 
     </script>

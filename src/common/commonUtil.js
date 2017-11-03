@@ -80,6 +80,13 @@ var _cu = {
     return sTSE;
   },
 
+  setDynamicHeight(nNextNumber, target, bCircular) {
+    if(bCircular) { nNextNumber++ } 
+    var elCurrent = target.children[nNextNumber];
+    var nHeight =  parseInt(getComputedStyle(elCurrent).height);
+    target.style.height = nHeight + "px";
+  },
+
   setCSS(el,style,value) {
     el.style[style] = value;
   },

@@ -105,6 +105,14 @@ var _cu = {
     var sTSE = sTS === "webkitTransition" ? "webkitTransitionEnd" : "transitionend";
     return sTSE;
   },
+  setDynamicHeight: function setDynamicHeight(nNextNumber, target, bCircular) {
+    if (bCircular) {
+      nNextNumber++;
+    }
+    var elCurrent = target.children[nNextNumber];
+    var nHeight = parseInt(getComputedStyle(elCurrent).height);
+    target.style.height = nHeight + "px";
+  },
   setCSS: function setCSS(el, style, value) {
     el.style[style] = value;
   },
@@ -593,7 +601,7 @@ var SweetSwipe = function (_CommonComponent3) {
     //set height of viewArea
     //this.setDynamicHeight(1);
     //if(this.option.bSettingScreenHeight) this.elTarget.style.height = window.innerHeight + "px";
-    if (this.option.bSettingScreenHeight) this.setDynamicHeight(0);
+    if (this.option.bSettingScreenHeight) _cu.setDynamicHeight(0, this.elTarget, this.option.bCircular);
 
     //swipe container width
     this.nSwipeWidth = _cu.getWidth(this.elTarget.firstElementChild); //case. position : static(float)
@@ -611,6 +619,8 @@ var SweetSwipe = function (_CommonComponent3) {
 
     this.bAnimationing = false;
     this.nNextNumber = 0;
+
+    this.recalculateWidth();
   };
 
   SweetSwipe.prototype.registerEvents = function registerEvents() {
@@ -808,7 +818,7 @@ var SweetSwipe = function (_CommonComponent3) {
       _CommonComponent3.prototype.runCustomFn.call(_this5, 'USER', 'FN_AFTER_SWIPE', _this5.nNextNumber);
       _CommonComponent3.prototype.runCustomFn.call(_this5, 'PLUGIN', 'FN_AFTER_SWIPE', _this5.nNextNumber);
 
-      if (_this5.option.bSettingScreenHeight) _this5.setDynamicHeight(_this5.nNextNumber);
+      if (_this5.option.bSettingScreenHeight) _cu.setDynamicHeight(_this5.nNextNumber, _this5.elTarget, _this5.option.bCircular);
 
       _this5.nNextNumber = 0;
 
@@ -818,16 +828,6 @@ var SweetSwipe = function (_CommonComponent3) {
 
   SweetSwipe.prototype.setNextNumber = function setNextNumber(nNextNumber) {
     this.nNextNumber = nNextNumber;
-  };
-
-  SweetSwipe.prototype.setDynamicHeight = function setDynamicHeight(nNextNumber) {
-    if (this.option.bCircular) {
-      nNextNumber++;
-    }
-
-    var elCurrent = this.elTarget.children[nNextNumber];
-    var nHeight = parseInt(getComputedStyle(elCurrent).height);
-    this.elTarget.style.height = nHeight + "px";
   };
 
   SweetSwipe.prototype.getCurrentViewNumber = function getCurrentViewNumber() {
@@ -891,6 +891,15 @@ var SweetSwipe = function (_CommonComponent3) {
     nCur = this.reAdjustNextNumberForCircular(nCur);
 
     this.runSwipeAction(this.option.nDuration, nCur, nWidth);
+  };
+
+  //TODO. REFACTORING throttle.
+
+
+  SweetSwipe.prototype.recalculateWidth = function recalculateWidth() {
+    window.addEventListener("resize", function () {
+      this.nSwipeWidth = _cu.getWidth(this.elTarget.firstElementChild);
+    }.bind(this), false);
   };
 
   return SweetSwipe;

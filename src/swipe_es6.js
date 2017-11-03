@@ -62,7 +62,7 @@ class SweetSwipe extends CommonComponent {
     //set height of viewArea
     //this.setDynamicHeight(1);
     //if(this.option.bSettingScreenHeight) this.elTarget.style.height = window.innerHeight + "px";
-    if(this.option.bSettingScreenHeight) this.setDynamicHeight(0);
+    if(this.option.bSettingScreenHeight) _cu.setDynamicHeight(0,this.elTarget, this.option.bCircular);
 
     //swipe container width
     this.nSwipeWidth = _cu.getWidth(this.elTarget.firstElementChild); //case. position : static(float)
@@ -80,6 +80,8 @@ class SweetSwipe extends CommonComponent {
 
     this.bAnimationing = false;
     this.nNextNumber = 0;
+
+    this.recalculateWidth();
 
   }
 
@@ -260,7 +262,7 @@ class SweetSwipe extends CommonComponent {
         super.runCustomFn('USER', 'FN_AFTER_SWIPE', this.nNextNumber);
         super.runCustomFn('PLUGIN', 'FN_AFTER_SWIPE', this.nNextNumber);
 
-        if(this.option.bSettingScreenHeight) this.setDynamicHeight(this.nNextNumber);    
+        if(this.option.bSettingScreenHeight) _cu.setDynamicHeight(this.nNextNumber,this.elTarget,this.option.bCircular);    
 
         this.nNextNumber = 0;
 
@@ -270,14 +272,6 @@ class SweetSwipe extends CommonComponent {
 
   setNextNumber(nNextNumber) {
     this.nNextNumber = nNextNumber;
-  };
-
-  setDynamicHeight(nNextNumber) {
-    if(this.option.bCircular) { nNextNumber++ } 
-
-    var elCurrent = this.elTarget.children[nNextNumber];
-    var nHeight =  parseInt(getComputedStyle(elCurrent).height);
-    this.elTarget.style.height = nHeight + "px";
   }
 
   getCurrentViewNumber() {
@@ -345,4 +339,10 @@ class SweetSwipe extends CommonComponent {
     this.runSwipeAction(this.option.nDuration, nCur, nWidth);
   }
 
+  //TODO. REFACTORING throttle.
+  recalculateWidth() {
+     window.addEventListener("resize", function() {
+      this.nSwipeWidth = _cu.getWidth(this.elTarget.firstElementChild);
+     }.bind(this), false);
+  }
 }

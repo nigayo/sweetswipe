@@ -756,7 +756,7 @@
           'nSideWidth' : 20,  //default 0
           'nDecisionSlope' : 0.8, //default 0.8
           'nForcedSwipeTime' : 100, //default 0
-          'bSettingScreenHeight':true, //default false
+          'bSettingScreenHeight':false, //default false
           'bMouseEventSupport': true    // default false
         });
 
@@ -795,7 +795,7 @@
        <script>
         window.onload = function() {
           var elTarget = document.getElementById("swipeWrap");
-          elTarget.style.height = oMyswipe.setDynamicHeight(1);
+          elTarget.style.height = _cu.setDynamicHeight(1, elTarget, false);
         }
       </script>
 
