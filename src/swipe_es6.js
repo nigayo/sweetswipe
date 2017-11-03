@@ -239,7 +239,7 @@ class SweetSwipe extends CommonComponent {
     let nPanelWidth = this.nSwipeWidth;
     let nMoveValue = (nPanelCount) * nPanelWidth; //refs : clonedNode is 2.
 
-    if(nPanelIndex === 0 || (nPanelIndex > (nPanelCount))  { 
+    if(nPanelIndex === 0 || (nPanelIndex > (nPanelCount)))  { 
       _cu.setTranslate3dXPercent(this.elTarget, 0);
     } 
   }
@@ -326,6 +326,23 @@ class SweetSwipe extends CommonComponent {
 
     elTarget.style[sTS] = sValue + " " + nDuration + "s";
     elTarget.style[sTF] = 'translate3d(' + (nPreviousTranslateX + nDistance) + 'px, 0, 0)';
+  }
+
+  runAutoAnimation(sDirection) {
+    if(this.bAnimationing) return;
+    let nCur = this.getCurrentViewNumber();
+    let nWidth = this.nSwipeWidth;
+
+    if (sDirection === "toRight") { 
+      nWidth *= -1;
+      nCur++;
+    } else {
+      nCur--;
+    }
+
+    nCur = this.reAdjustNextNumberForCircular(nCur);
+
+    this.runSwipeAction(this.option.nDuration, nCur, nWidth);
   }
 
 }
