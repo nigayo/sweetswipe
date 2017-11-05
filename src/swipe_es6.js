@@ -341,8 +341,20 @@ class SweetSwipe extends CommonComponent {
 
   //TODO. REFACTORING throttle.
   recalculateWidth() {
+     let resizerunner = false;
+
      window.addEventListener("resize", function() {
-      this.nSwipeWidth = _cu.getWidth(this.elTarget.firstElementChild);
+      if(resizerunner)return;
+      resizerunner = true;
+
+      setTimeout(() => {
+        this.nSwipeWidth = _cu.getWidth(this.elTarget.firstElementChild);
+        resizerunner = false;
+      },1000);
+
      }.bind(this), false);
   }
 }
+
+
+
