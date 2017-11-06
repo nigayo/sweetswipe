@@ -49,7 +49,8 @@ class SweetSwipe extends CommonComponent {
       'nDecisionSlope': 0.8,
       'nForcedSwipeTime': 0,
       'bSettingScreenHeight': false,
-      'bMouseEventSupport' : false
+      'bMouseEventSupport' : false,
+      'bTouchEventSupport' : true,
     }
   }
 }
@@ -86,9 +87,11 @@ class SweetSwipe extends CommonComponent {
   }
 
   registerEvents() {
-    this.elTarget.addEventListener("touchstart", (evt) => { this.handlerTouchStart(evt) });
-    this.elTarget.addEventListener("touchmove", (evt) => { this.handlerTouchMove(evt) });
-    this.elTarget.addEventListener("touchend", (evt) => { this.handlerTouchEnd(evt) });
+    if(this.option.bTouchEventSupport) {
+      this.elTarget.addEventListener("touchstart", (evt) => { this.handlerTouchStart(evt) });
+      this.elTarget.addEventListener("touchmove", (evt) => { this.handlerTouchMove(evt) });
+      this.elTarget.addEventListener("touchend", (evt) => { this.handlerTouchEnd(evt) });
+    }
 
     if(this.option.bMouseEventSupport) {
       this.elTarget.addEventListener("mousedown", (evt) => { this.handlerTouchStart(evt) });
@@ -339,7 +342,6 @@ class SweetSwipe extends CommonComponent {
     this.runSwipeAction(this.option.nDuration, nCur, nWidth);
   }
 
-  //TODO. REFACTORING throttle.
   recalculateWidth() {
      let resizerunner = false;
 
@@ -350,11 +352,9 @@ class SweetSwipe extends CommonComponent {
       setTimeout(() => {
         this.nSwipeWidth = _cu.getWidth(this.elTarget.firstElementChild);
         resizerunner = false;
-      },1000);
+      },100);
 
      }.bind(this), false);
   }
 }
-
-
 
