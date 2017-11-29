@@ -621,6 +621,7 @@ var SweetSwipe = function (_CommonComponent3) {
     this.bAnimationing = false;
     this.nNextNumber = 0;
 
+    //TODO. 옵션으로 받아서 필요한 경우만 resize 이벤트 모니터링하도록 기능추가.
     this.recalculateWidth();
   };
 
@@ -895,9 +896,6 @@ var SweetSwipe = function (_CommonComponent3) {
 
     this.runSwipeAction(this.option.nDuration, nCur, nWidth);
   };
-
-  //TODO. REFACTORING throttle.
-
 
   SweetSwipe.prototype.recalculateWidth = function recalculateWidth() {
     var resizerunner = false;
