@@ -7,7 +7,7 @@ A lightweight swiping(flicking) mobile web component.
 ## Demo
 
 * <a href="https://skplanet.github.io/sweetswipe/demo/swipe.html" target="_blank">Base demo</a>
-* <a href="https://skplanet.github.io/sweetswipe/demo/swipe_circular.html" target="_blank">Circular demo</a>
+* <a href="https://skplanet.github.io/sweetswipe/demo/swipe_circular_stepmover.html" target="_blank">Circular demo</a>
 
 <img src="demo/img/swipedemo.png" width="300">
 
@@ -59,7 +59,7 @@ A lightweight swiping(flicking) mobile web component.
 
 ## Usage - CSS 
 ```CSS
-	.viewArea {
+    .viewArea {
         overflow: hidden;
         height: 200px;
     }
@@ -85,7 +85,7 @@ A lightweight swiping(flicking) mobile web component.
     }
     #swipeWrap div:nth-child(2){
         background-color: green;
-        transform: translate3d(0%, 0px, 0px);
+        transform: translate3d(100%, 0px, 0px);
         -webkit-transform: translate3d(100%, 0px, 0px);
     }
     #swipeWrap div:nth-child(3){
@@ -110,7 +110,8 @@ A lightweight swiping(flicking) mobile web component.
       'nDecisionSlope': 0.8,
       'nForcedSwipeTime': 100,
       'bSettingScreenHeight': false,
-      'bMouseEventSupport': true
+      'bMouseEventSupport': true,
+      'bTouchEventSupport' : false,
     });
 
 ```
@@ -121,14 +122,15 @@ A lightweight swiping(flicking) mobile web component.
 
 | Option | Description|
 | ------ | -----------|
-| bCircular | A boolean that circulate swipe gesture |
-| nDuration | A milisecond during swiping animation |
-| nBackWidth | A touchmove moving distance that can be executed swiping |
-| nSideWidth | A dummy width to show at first and last panel |
-| nDecisionSlope | A touchmove slope that can be executed swiping |
-| nForceSwipeTime | A milisecond that can be executed swiping regardless of touch moving distance|
-| bSettingScreenHeight |A boolean that set content height whenever end of swiping animation|
-| bMouseEventSupport | A boolean that can be executed swiping by mouse events |
+| bCircular | 무한롤링을 할지 결정 |
+| nDuration | 스와이프 애니메이션 소요시간 |
+| nBackWidth | 지정된px을 넘으면 스와이핑이 일어남. 그 이하면 스와이핑이 안되고 돌아옴 |
+| nSideWidth | 무한롤링이 아닐때 처음과 마지막 패널이 살짝 가는 척하는 거리(px) |
+| nDecisionSlope | 스와이핑이 일어날 수 있는 touchmove의 기울기 |
+| nForceSwipeTime | 터치이동거리에 상관없이 스와이핑이 일어날 수 있는 시간(millisecond)|
+| bSettingScreenHeight | 스와이핑이 끝날때마다 패널의 높이값을 계산해서 높이를 지정해줘야 할 때 사용 |
+| bMouseEventSupport | PC에서 사용할대 마우스 이벤트에 스와이핑 기능이 필요하다면 true |
+| bTouchEventSupport | 터치나 마우스 기반의 스와이핑이 필요하지 않다면 false |
 
 
 <img src="demo/img/swipe.png" width="350">
@@ -165,20 +167,22 @@ You can register custom function that executed at specific point of time.
 
 <br>
 
-## Usage of Circular swiping
+## Usage of Circular swiping(무한 롤링)
 
 ##### JavaScript
+아래와 같이 bCircular만 true로 두면 된다.
 ```javascript
    'bCircular': true,
 ```
 
 ##### HTML
-You have to add two cloned elements (first and last element).
-If your page's swiping panel is three, you have to add elements as follows.
-"1234 -> 412341"
-The reason for this is to minimize a reflow.
+무한롤링을 구현하기 위해서는 맨앞과 맨뒤에 복제한 노드를 추가해야 한다.
+예를들어 1,2,3,4이렇게 4개의 패널(노드)가 있다면, 앞에 4, 뒤에 1번 패널을 복제해서 추가한다.
+javascript로 불필요하게 복제하지 않고, HTML을 미리 구현하는 것이 성능에 좀더 유리하다.
+따라서 실제 HTML구조는 "1234 -> 412341" 가 될 것이다.
 
-Reference code : [go to demo page]( https://github.com/skplanet/sweetswipe/blob/master/demo/dev_circular_app.html)
+아래 참고 코드를 살펴보자
+: [go to demo page]( https://github.com/skplanet/sweetswipe/blob/master/demo/dev_circular_app.html)
 
 
 ##### CSS
