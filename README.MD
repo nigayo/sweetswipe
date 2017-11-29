@@ -4,23 +4,27 @@ A lightweight swiping(flicking) mobile web component.
 
 <br>
 
+-------
 ## Demo
 
-* <a href="https://skplanet.github.io/sweetswipe/demo/swipe.html" target="_blank">Base demo</a>
-* <a href="https://skplanet.github.io/sweetswipe/demo/swipe_circular_stepmover.html" target="_blank">Circular demo</a>
+* <a href="https://skplanet.github.io/sweetswipe/demo/swipe.html" target="_blank">Base</a>
+* <a href="https://skplanet.github.io/sweetswipe/demo/swipe_circular_stepmover.html" target="_blank">Circular</a>
+* <a href="https://skplanet.github.io/sweetswipe/demo/swipe_circular_responsive_width.html" target="_blank">Circular responsive width</a>
 
 <img src="demo/img/swipedemo.png" width="300">
 
 <br>
 
+-------
 ## Feature
 
 * lightweight (vanillaJS)
 * CSS3 based fast animation
-* multiple options and plugins
+* circular sliding
 
 <br>
 
+-------
 ## Compatibility
 
 | Device | Browser | 
@@ -30,6 +34,7 @@ A lightweight swiping(flicking) mobile web component.
 
 <br>
 
+-------
 ## Install
 
 * npm install
@@ -39,12 +44,14 @@ A lightweight swiping(flicking) mobile web component.
 <script src="../dist/swipe_merge_es5.js"></script>
 ```
 
+-------
 ## Install using Bower
 
 * bower install sweetswipe
 
 <br>
 
+-------
 ## Usage - HTML 
 
 ```HTML
@@ -57,6 +64,7 @@ A lightweight swiping(flicking) mobile web component.
     </div>
 ```
 
+-------
 ## Usage - CSS 
 ```CSS
     .viewArea {
@@ -98,6 +106,7 @@ A lightweight swiping(flicking) mobile web component.
 
 <br>
 
+-------
 ## Usage - JavaScript
 
 ```javascript
@@ -118,6 +127,7 @@ A lightweight swiping(flicking) mobile web component.
 
 <br>
 
+-------
 ## Options 
 
 | Option | Description|
@@ -129,7 +139,7 @@ A lightweight swiping(flicking) mobile web component.
 | nDecisionSlope | 스와이핑이 일어날 수 있는 touchmove의 기울기 |
 | nForceSwipeTime | 터치이동거리에 상관없이 스와이핑이 일어날 수 있는 시간(millisecond)|
 | bSettingScreenHeight | 스와이핑이 끝날때마다 패널의 높이값을 계산해서 높이를 지정해줘야 할 때 사용 |
-| bMouseEventSupport | PC에서 사용할대 마우스 이벤트에 스와이핑 기능이 필요하다면 true |
+| bMouseEventSupport | 마우스 이벤트에 스와이핑 기능이 필요하다면 true |
 | bTouchEventSupport | 터치나 마우스 기반의 스와이핑이 필요하지 않다면 false |
 
 
@@ -137,6 +147,7 @@ A lightweight swiping(flicking) mobile web component.
 
 <br>
 
+-------
 ## Custom function
 You can register custom function that executed at specific point of time.
 
@@ -158,6 +169,7 @@ You can register custom function that executed at specific point of time.
 
 <br>
 
+-------
 ## API
 | Function | Description | return | Parameter |
 | -------- | ----------- | ------ | --------- |
@@ -167,7 +179,8 @@ You can register custom function that executed at specific point of time.
 
 <br>
 
-## Usage of Circular swiping(무한 롤링)
+-------
+## Usage of Circular swiping(무한 슬라이딩)
 
 ##### JavaScript
 아래와 같이 bCircular만 true로 두면 된다.
@@ -213,7 +226,30 @@ javascript로 불필요하게 복제하지 않고, HTML을 미리 구현하는 �
 
 <br>
 
+------
+## Usage of auto swiping(자동 슬라이딩)
+
+아래와 같이 사용하면 자동으로 swiping 된다. 
+참고코드 
+
+
+##### JavaScript
+```javascript
+  (function movePanel() {
+    setTimeout(function(){
+      oMyswipe.runAutoAnimation("toRight");
+      movePanel();
+    }, 5000);
+  })();
+```
+
+참고코드 : 
+* <a href="https://skplanet.github.io/sweetswipe/demo/swipe_circular_responsive_width.html" target="_blank">Circular responsive width</a>
+
+-------
 ##  Plugin - SwipeNavigationPlugin
+몇 개 Plugin으로 확장기능을 사용할 수 있다.
+
 Tab menu navigation UI.
 
 <img src="demo/img/tabmenu.png" width="250">
