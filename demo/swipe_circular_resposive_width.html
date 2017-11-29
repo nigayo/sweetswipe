@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+
+        <style>
+
+        #wrapper *  {
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0.247059);
+        }
+
+        .viewArea {
+            overflow: hidden;
+        }
+
+          #swipeWrap {
+              position : relative;
+              width :100%;
+              -webkit-transform: translate3d(0px, 0px, 0px);
+              transform: translate3d(0px, 0px, 0px);
+              font-size: 0.9em;
+          }
+
+          #swipeWrap > div {
+              width :100%;
+              position: absolute;
+              top: 0;
+              height: auto;
+          }
+
+          #swipeWrap > div > img {
+            width : 100%;
+            height:auto;
+          }
+
+            #swipeWrap > div:nth-child(1) {
+                 -ms-transform: translate3d(-100%, 0px, 0px);
+                -webkit-transform: translate3d(-100%, 0px, 0px);
+                background-color: #FFCDD2;
+            }
+            #swipeWrap > div:nth-child(2){
+                -ms-transform: translate3d(0%, 0px, 0px);
+                -webkit-transform: translate3d(0%, 0px, 0px);
+                background-color: #F5F5F5;
+            }
+            #swipeWrap > div:nth-child(3){
+                -ms-transform: translate3d(100%, 0px, 0px);
+                -webkit-transform: translate3d(100%, 0px, 0px);
+                background-color: #BBDEFB;
+            }
+
+            #swipeWrap > div:nth-child(4){
+              -ms-transform: translate3d(200%, 0px, 0px);
+              -webkit-transform: translate3d(200%, 0px, 0px);
+              background-color: #FFFDE7;
+            }
+
+            #swipeWrap > div:nth-child(5){
+              -ms-transform: translate3d(300%, 0px, 0px);
+              -webkit-transform: translate3d(300%, 0px, 0px);
+                background-color: #FFCDD2;
+            }
+
+            #swipeWrap > div:nth-child(6){
+              -ms-transform: translate3d(400%, 0px, 0px);
+              -webkit-transform: translate3d(400%, 0px, 0px);  
+                background-color: #F5F5F5;
+            }
+
+        </style>
+
+    </head>
+    <body>
+
+        <div id="wrapper">
+            <div class="pageNumber"></div>
+
+            <div class="viewArea">
+                <div id="swipeWrap">
+                    <div class="cloned">
+                        <img src="https://www.javascript.com/images/meta/facebook.png" alt="">
+                    </div>
+
+                    <div>
+                        <img src="https://i.ytimg.com/vi/lN2bl-TVOg4/maxresdefault.jpg" alt="">
+                    </div>
+
+                    <div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqgponfO-VubUNkCnDOGWDMCx0CRVSHYQ59uaBckfLFE8K5brCfQ" alt="">
+                    </div>
+
+                    <div>
+                    <img src="https://cdn-images-1.medium.com/max/653/1*wMZnVAEei1xbY1v6sAbYxQ.png" alt="">
+                    </div>
+
+                    <div>
+                        <img src="https://www.javascript.com/images/meta/facebook.png" alt="">
+                    </div>
+
+                    <div class="cloned" >
+                        <img src="https://i.ytimg.com/vi/lN2bl-TVOg4/maxresdefault.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttonNavi">
+              <button class="swipe-prev"><</button>
+              <button class="swipe-next">></button>
+          </div>
+
+      </div>
+      <div id="log"></div>
+
+    <script src="../dist/swipe_merge_es5.js"></script>
+
+  <script>
+        var elSwapWrap = document.getElementById("swipeWrap");
+        var oMyswipe = new SweetSwipe( elSwapWrap, {
+          'bCircular' : true,
+          'nDuration' : 300,  //default 100
+          'nBackWidth' : 60,  //default 60
+          'nSideWidth' : 20,  //default 0
+          'nDecisionSlope' : 0.8, //default 0.8
+          'nForcedSwipeTime' : 100, //default 0
+          'bSettingScreenHeight': true,
+          'bMouseEventSupport' : true
+        });
+
+        oMyswipe.registerUserMethod({
+          'FN_BEFORE_SWIPE': function(n){},
+          'FN_AFTER_SWIPE': function(n){},
+          'FN_COMPONENT_DID_LOAD' : function(){
+          }
+        });
+
+        oMyswipe.onPlugins([
+        {
+          'name'      : 'SwipeStepMoverPlugin',
+          'option'    : {
+            'prevButton' : document.querySelector(".swipe-prev"),
+            'nextButton' : document.querySelector(".swipe-next"),
+            'nDuration': 200
+          },
+          'userMethod' : {}
+        } 
+        ]);
+
+        var elViewImage = document.querySelector("#swipeWrap > div:nth-child(2) img");
+        elViewImage.onload = function() {
+          elFirst = _cu.setDynamicHeight(0, elSwapWrap, true);
+        }    
+
+        //recursive animation examples
+        !(function movePanel() {
+          setTimeout(function(){
+            oMyswipe.runAutoAnimation("toRight");
+            movePanel();
+          }, 5000);
+        })();
+
+
+    </script>
+
+    <!-- for weinre test -->
+    <!-- script src="http://10.203.227.198:8081/target/target-script-min.js#anonymous"></script -->
+
+  </body>
+</html>
