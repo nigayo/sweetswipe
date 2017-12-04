@@ -359,3 +359,4 @@ class SweetSwipe extends CommonComponent {
   }
 }
 
+module.exports = SweetSwipe

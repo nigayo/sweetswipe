@@ -915,4 +915,6 @@ var SweetSwipe = function (_CommonComponent3) {
 
   return SweetSwipe;
 }(CommonComponent);
+
+module.exports = SweetSwipe;
 //# sourceMappingURL=swipe_merge_es5.js.map
