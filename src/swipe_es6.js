@@ -359,4 +359,10 @@ class SweetSwipe extends CommonComponent {
   }
 }
 
-module.exports = SweetSwipe
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
+  module.exports = SweetSwipe
+else
+  window.Validator = SweetSwipe;
+
+

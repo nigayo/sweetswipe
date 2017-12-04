@@ -422,6 +422,7 @@ var SwipeNavigationPlugin = function (_CommonComponent) {
   return SwipeNavigationPlugin;
 }(CommonComponent);
 
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') module.exports = SwipeNavigationPlugin;else window.Validator = SwipeNavigationPlugin;
 /*
 * The MIT License (MIT)
 * Copyright (c) 2016 SK PLANET. All Rights Reserved. *
@@ -539,6 +540,8 @@ var SwipeStepMoverPlugin = function (_CommonComponent2) {
 
   return SwipeStepMoverPlugin;
 }(CommonComponent);
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') module.exports = SwipeStepMoverPlugin;else window.Validator = SwipeStepMoverPlugin;
 
 /*
 * The MIT License (MIT)
@@ -916,5 +919,5 @@ var SweetSwipe = function (_CommonComponent3) {
   return SweetSwipe;
 }(CommonComponent);
 
-module.exports = SweetSwipe;
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') module.exports = SweetSwipe;else window.Validator = SweetSwipe;
 //# sourceMappingURL=swipe_merge_es5.js.map
