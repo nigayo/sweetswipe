@@ -110,8 +110,10 @@ class CommonComponent {
     let oParent = this;
     aPluginList.forEach((v) => {
       let sName = v.name;
+      let obj = v.obj;
       if(aMyPluginName.indexOf(sName) < 0) return;
-      let oPlugin = new window[v.name](elTarget, v.option);
+      //let oPlugin = new window[v.name](elTarget, v.option);
+      let oPlugin = new obj(elTarget, v.option);
       oPlugin.registerUserMethod(v.userMethod);
       this._injectParentObject(oParent, oPlugin);
     });

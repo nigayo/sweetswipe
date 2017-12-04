@@ -108,8 +108,3 @@ class SwipeNavigationPlugin extends CommonComponent {
     this.oParentInstance = oParent;
   }
 }
-
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
-  module.exports = SwipeNavigationPlugin
-else
-  window.Validator = SwipeNavigationPlugin;

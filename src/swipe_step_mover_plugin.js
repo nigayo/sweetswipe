@@ -104,7 +104,3 @@ class SwipeStepMoverPlugin extends CommonComponent {
   }
 }
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined')
-  module.exports = SwipeStepMoverPlugin;
-else
-  window.Validator = SwipeStepMoverPlugin;

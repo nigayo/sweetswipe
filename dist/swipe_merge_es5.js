@@ -258,8 +258,10 @@ var CommonComponent = function () {
     var oParent = this;
     aPluginList.forEach(function (v) {
       var sName = v.name;
+      var obj = v.obj;
       if (aMyPluginName.indexOf(sName) < 0) return;
-      var oPlugin = new window[v.name](elTarget, v.option);
+      //let oPlugin = new window[v.name](elTarget, v.option);
+      var oPlugin = new obj(elTarget, v.option);
       oPlugin.registerUserMethod(v.userMethod);
       _this2._injectParentObject(oParent, oPlugin);
     });
@@ -422,7 +424,6 @@ var SwipeNavigationPlugin = function (_CommonComponent) {
   return SwipeNavigationPlugin;
 }(CommonComponent);
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') module.exports = SwipeNavigationPlugin;else window.Validator = SwipeNavigationPlugin;
 /*
 * The MIT License (MIT)
 * Copyright (c) 2016 SK PLANET. All Rights Reserved. *
@@ -540,8 +541,6 @@ var SwipeStepMoverPlugin = function (_CommonComponent2) {
 
   return SwipeStepMoverPlugin;
 }(CommonComponent);
-
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') module.exports = SwipeStepMoverPlugin;else window.Validator = SwipeStepMoverPlugin;
 
 /*
 * The MIT License (MIT)
@@ -919,5 +918,9 @@ var SweetSwipe = function (_CommonComponent3) {
   return SweetSwipe;
 }(CommonComponent);
 
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') module.exports = SweetSwipe;else window.Validator = SweetSwipe;
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') module.exports = {
+  SweetSwipe: SweetSwipe,
+  SwipeNavigationPlugin: SwipeNavigationPlugin,
+  SwipeStepMoverPlugin: SwipeStepMoverPlugin
+};
 //# sourceMappingURL=swipe_merge_es5.js.map
