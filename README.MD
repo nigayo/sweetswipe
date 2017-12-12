@@ -274,7 +274,8 @@ Tab menu navigation UI.
        'nDuration': 200,   //swipe animation duration(millisecond).
        'bMouseEventSupport': true  //click event support
       },
-      'userMethod' : {}
+      'userMethod' : {},
+      'obj' : SwipeNavigationPlugin
     }
   ]);
 ```
@@ -303,8 +304,9 @@ Button menu navigation UI
       'nextButton' : document.querySelector(".swipe-next"),
       'nDuration': 200
     },
-    'userMethod' : {}
-  ]);
+    'userMethod' : {},
+    'obj' : SwipeStepMoverPlugin
+    ]);
 ```
 
 <br>
